@@ -191,7 +191,7 @@ CREATE TABLE `resource` (
   `name` varchar(100) NOT NULL,
   `owner_id` int(11) NOT NULL,
   `class_id` int(11) NOT NULL,
-  `coordinates` mediumtext NOT NULL,
+  `coordinates` geometry NOT NULL,
   `coordinates_type_id` int(11) NOT NULL,
   `owner_data_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`resource_id`),
@@ -347,4 +347,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-09-09 19:29:10
+-- Dump completed on 2015-09-09 19:34:13
