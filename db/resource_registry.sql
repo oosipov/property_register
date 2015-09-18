@@ -123,34 +123,6 @@ LOCK TABLES `operation_type` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `owner`
---
-
-DROP TABLE IF EXISTS `owner`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `owner` (
-  `owner_id` int(11) NOT NULL AUTO_INCREMENT,
-  `last_name` varchar(40) NOT NULL,
-  `first_name` varchar(40) NOT NULL,
-  `middle_name` varchar(40) NOT NULL,
-  `pasport_series` varchar(5) NOT NULL,
-  `pasport_number` varchar(10) NOT NULL,
-  `address` varchar(100) NOT NULL,
-  PRIMARY KEY (`owner_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `owner`
---
-
-LOCK TABLES `owner` WRITE;
-/*!40000 ALTER TABLE `owner` DISABLE KEYS */;
-/*!40000 ALTER TABLE `owner` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `parameter`
 --
 
@@ -180,6 +152,34 @@ LOCK TABLES `parameter` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `personal_data`
+--
+
+DROP TABLE IF EXISTS `personal_data`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `personal_data` (
+  `personal_data_id` int(11) NOT NULL AUTO_INCREMENT,
+  `last_name` varchar(40) NOT NULL,
+  `first_name` varchar(40) NOT NULL,
+  `middle_name` varchar(40) NOT NULL,
+  `pasport_series` varchar(5) NOT NULL,
+  `pasport_number` varchar(10) NOT NULL,
+  `address` varchar(100) NOT NULL,
+  PRIMARY KEY (`personal_data_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `personal_data`
+--
+
+LOCK TABLES `personal_data` WRITE;
+/*!40000 ALTER TABLE `personal_data` DISABLE KEYS */;
+/*!40000 ALTER TABLE `personal_data` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `resource`
 --
 
@@ -191,14 +191,15 @@ CREATE TABLE `resource` (
   `name` varchar(100) NOT NULL,
   `owner_id` int(11) NOT NULL,
   `class_id` int(11) NOT NULL,
-  `coordinates` mediumtext NOT NULL,
+  `coordinates` geometry NOT NULL,
   `coordinates_type_id` int(11) NOT NULL,
+  `owner_data_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`resource_id`),
-  KEY `fk_resource_owner1_idx` (`owner_id`),
   KEY `fk_resource_resource_class1_idx` (`class_id`),
   KEY `fk_resource_coordinates_type1_idx` (`coordinates_type_id`),
+  KEY `fk_resource_personal_data1_idx` (`owner_data_id`),
   CONSTRAINT `fk_resource_coordinates_type1` FOREIGN KEY (`coordinates_type_id`) REFERENCES `coordinates_type` (`type_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_resource_owner1` FOREIGN KEY (`owner_id`) REFERENCES `owner` (`owner_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_resource_personal_data1` FOREIGN KEY (`owner_data_id`) REFERENCES `personal_data` (`personal_data_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_resource_resource_class1` FOREIGN KEY (`class_id`) REFERENCES `resource_class` (`class_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -296,7 +297,7 @@ CREATE TABLE `user` (
   `user_data_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`user_id`),
   KEY `fk_user_user_data1_idx` (`user_data_id`),
-  CONSTRAINT `fk_user_user_data1` FOREIGN KEY (`user_data_id`) REFERENCES `user_data` (`user_data_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_user_user_data1` FOREIGN KEY (`user_data_id`) REFERENCES `personal_data` (`personal_data_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -307,34 +308,6 @@ CREATE TABLE `user` (
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `user_data`
---
-
-DROP TABLE IF EXISTS `user_data`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `user_data` (
-  `user_data_id` int(11) NOT NULL AUTO_INCREMENT,
-  `last_name` varchar(40) NOT NULL,
-  `first_name` varchar(40) NOT NULL,
-  `middle_name` varchar(40) NOT NULL,
-  `pasport_series` varchar(5) NOT NULL,
-  `pasport_number` varchar(10) NOT NULL,
-  `address` varchar(100) NOT NULL,
-  PRIMARY KEY (`user_data_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `user_data`
---
-
-LOCK TABLES `user_data` WRITE;
-/*!40000 ALTER TABLE `user_data` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user_data` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -374,4 +347,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-09-08 11:24:51
+-- Dump completed on 2015-09-09 19:34:13
